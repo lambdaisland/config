@@ -133,17 +133,20 @@
         xdg-path     (io/file
                       (or (System/getenv "XDG_CONFIG_HOME")
                           (io/file (System/getProperty "user.home") ".config"))
-                      (str prefix ".edn"))]
+                      (str prefix ".edn"))
+        etc-path     (io/file "/etc" (str prefix ".edn"))]
     (new-config
      env
      [(when env-vars
         (->EnvProvider (when prefix-env prefix)))
+      (when java-system-props
+        (->PropertiesProvider (when prefix-props prefix)))
       (when (and local-config (.exists config-local))
         (->AeroProvider config-local aero-opts (atom nil)))
       (when (and xdg-config (.exists xdg-path))
         (->AeroProvider xdg-path aero-opts (atom nil)))
-      (when java-system-props
-        (->PropertiesProvider (when prefix-props prefix)))
+      (when (.exists etc-path)
+        (->AeroProvider etc-path aero-opts (atom nil)))
       (when env-edn
         (->AeroProvider env-edn aero-opts (atom nil)))
       (when config-edn

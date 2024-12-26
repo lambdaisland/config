@@ -28,13 +28,13 @@ Configuration library
 To use the latest release, add the following to your `deps.edn` ([Clojure CLI](https://clojure.org/guides/deps_and_cli))
 
 ```
-com.lambdaisland/config {:mvn/version "0.3.13"}
+com.lambdaisland/config {:mvn/version "0.2.10"}
 ```
 
 or add the following to your `project.clj` ([Leiningen](https://leiningen.org/))
 
 ```
-[com.lambdaisland/config "0.3.13"]
+[com.lambdaisland/config "0.2.10"]
 ```
 <!-- /installation -->
 
@@ -98,9 +98,10 @@ to follow XDG conventions and read a `~/.config/app-name.edn` file.
 This will check, in order, until it's found a value:
 
 - The `$APP_NAME__HTTP__PORT` environment variable
+- The `app-name.http.port` Java system property (`System/getProperty`)
 - `config.local.edn` in the JVM's CWD
 - `$XDG_CONFIG_HOME/app-name.edn`
-- The `app-name.http.port` Java system property (`System/getProperty`)
+- `/etc/app-name.edn`
 - `app-name/dev.edn` on the CLASSPATH (e.g. under `resources`)
 - `app-name/config.edn` on the CLASSPATH
 
@@ -129,6 +130,7 @@ this for instance in a staging environment.
 ```clj
 (defprotocol ConfigProvider
   (-value [this k])
+  
   (-source [this k])
   (-reload [this]))
 ```
@@ -161,6 +163,12 @@ If you want a different precedence order, or want to inject your own
 `ConfigProvider`, then either don't use `create` and construct your own config
 map as you see fit, or do use `create`, but subsequently update the `:providers`
 list.
+
+### Aero Support
+
+All EDN files are read with [Aero](https://github.com/juxt/aero), so reader
+macros like `#env`, `#profile`, and `#or` are available. We pass the app env
+(`prod`, `dev`, etc) in as the Aero `:profile`.
 
 ### `lambdaisland/cli` integration
 
@@ -205,7 +213,7 @@ multi-threaded) scenarios you can pass a var or other derefable to
   (cli/dispatch* cmdspec argv))
 ```
 
-### Idiomatic Usage
+## Idiomatic Usage
 
 In summary, the general idea is:
 
