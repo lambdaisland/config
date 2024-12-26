@@ -2,9 +2,12 @@
 
 ## Added
 
-## Fixed
+- Also check `/etc/<app-name>.edn`
 
 ## Changed
+
+- Change the priority of Java system properties, they come right after env vars,
+  overriding config.local.edn, XDG config, etc.
 
 # 0.3.13 (2024-12-23 / db97476)
 
