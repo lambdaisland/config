@@ -174,7 +174,7 @@ macros like `#env`, `#profile`, and `#or` are available. We pass the app env
 
 Apart from the options listed, you might also want to provide command line flags
 to set specific options. For this you can use
-[com.lambdaisland/cli](https://github.com/lambdisland/cli), and
+[com.lambdaisland/cli](https://github.com/lambdaisland/cli), and
 `lambdaisland.config.cli/add-provider`.
 
 Here's an illustrative example. Note that this relies on the dynamic var
