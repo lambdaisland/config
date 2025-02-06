@@ -3,7 +3,7 @@
   <modelVersion>4.0.0</modelVersion>
   <groupId>com.lambdaisland</groupId>
   <artifactId>config</artifactId>
-  <version>0.4.17</version>
+  <version>0.5.22</version>
   <name>config</name>
   <description>Configuration library</description>
   <url>https://github.com/lambdaisland/config</url>
@@ -25,7 +25,7 @@
     <url>https://github.com/lambdaisland/config</url>
     <connection>scm:git:git://github.com/lambdaisland/config.git</connection>
     <developerConnection>scm:git:ssh://git@github.com/lambdaisland/config.git</developerConnection>
-    <tag>4210116addc3211cf19fa2d32626c67125871c70</tag>
+    <tag>1c2da2e36093e447c8da8eb2c3707d456b107d88</tag>
   </scm>
   <dependencies>
     <dependency>
@@ -36,7 +36,7 @@
     <dependency>
       <groupId>lambdaisland</groupId>
       <artifactId>data-printers</artifactId>
-      <version>0.7.47</version>
+      <version>0.9.58</version>
     </dependency>
   </dependencies>
   <build>
@@ -63,7 +63,7 @@
         <configuration>
           <archive>
             <manifestEntries>
-              <git-revision>4210116addc3211cf19fa2d32626c67125871c70</git-revision>
+              <git-revision>1c2da2e36093e447c8da8eb2c3707d456b107d88</git-revision>
             </manifestEntries>
           </archive>
         </configuration>
