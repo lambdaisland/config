@@ -1,4 +1,4 @@
-# Unreleased
+# 0.5.22 (2025-02-06 / 9db9c06)
 
 ## Changed
 
