@@ -5,7 +5,7 @@
    [clojure.core :as c]
    [clojure.java.io :as io]
    [clojure.string :as str]
-   [lambdaisland.data-printers :as printers]))
+   [lambdaisland.data-printers.auto :as printers]))
 
 (defn- env-case [s]
   (-> s str/upper-case (str/replace #"[-/]" "_")))
@@ -53,6 +53,9 @@
   (-source [this k])
   (-reload [this]))
 
+(defn register-print [klz data-fn]
+  (printers/register-printer klz (symbol (.getName klz)) data-fn))
+
 (defn ensure-aero [path cache opts]
   (when-not @cache
     (reset! cache (aero/read-config path opts))))
@@ -74,11 +77,15 @@
   (-reload [this]
     (reset! cache (aero/read-config path opts))))
 
+(register-print AeroProvider #(do {:path (.-path %)}))
+
 (deftype EnvProvider [prefix]
   ConfigProvider
   (-value [this k] (System/getenv (key->env-var prefix k)))
   (-source [this k] (str "$" (key->env-var prefix k) " environment variable"))
   (-reload [this]))
+
+(register-print EnvProvider #(do {:prefix (.-prefix %)}))
 
 (defn- property-key [prefix k]
   (str (when prefix
@@ -91,11 +98,15 @@
   (-source [this k] (str (property-key prefix k) " java system property"))
   (-reload [this]))
 
+(register-print PropertiesProvider #(do {:prefix (.-prefix %)}))
+
 (deftype MapProvider [m desc]
   ConfigProvider
   (-value [this k] (c/get m k))
   (-source [this k] (str k " " desc))
   (-reload [this]))
+
+(register-print MapProvider #(do {:desc (.-desc %)}))
 
 (deftype DerefMapProvider [m desc]
   ConfigProvider
@@ -103,13 +114,7 @@
   (-source [this k] (str k " " desc))
   (-reload [this]))
 
-(doseq [c [AeroProvider
-           EnvProvider
-           PropertiesProvider
-           MapProvider
-           DerefMapProvider]]
-  (printers/register-print c (.getName c) meta)
-  (printers/register-pprint c (.getName c) meta))
+(register-print DerefMapProvider #(do {:desc (.-desc %)}))
 
 (defn new-config [env providers]
   {:env env

@@ -1,10 +1,14 @@
 {:paths ["src"]
 
  :deps
- {aero/aero {:mvn/version "1.1.6"}
-  lambdaisland/data-printers {:mvn/version "0.7.47"}}
+ {aero/aero                  {:mvn/version "1.1.6"}
+  lambdaisland/data-printers {:mvn/version "0.9.58"}}
 
  :aliases
- {:test
+ {:aliases
+  {:provided
+   {com.lambdaisland/cli {:mvn/version "0.19.78"}}}
+
+  :test
   {:extra-paths ["test"]
    :extra-deps  {lambdaisland/kaocha {:mvn/version "1.91.1392"}}}}}

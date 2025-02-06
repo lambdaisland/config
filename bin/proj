@@ -6,7 +6,8 @@
  {:license        :mpl
   :group-id       "com.lambdaisland"
   :inception-year 2024
-  :description    "Configuration library"})
+  :description    "Configuration library"
+  :aliases-as-scope-provided #{:provided}})
 
 ;; Local Variables:
 ;; mode:clojure

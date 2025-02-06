@@ -1,10 +1,8 @@
 # Unreleased
 
-## Added
-
-## Fixed
-
 ## Changed
+
+- Bump data-printers, and use the new `auto` functionality
 
 # 0.4.17 (2024-12-26 / 139a028)
 
