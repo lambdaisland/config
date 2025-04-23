@@ -1,5 +1,6 @@
 (ns lambdaisland.config
-  (:refer-clojure :exclude [get])
+  #?@(:bb []
+      :default [(:refer-clojure :exclude [get])])
   (:require
    [aero.core :as aero]
    [clojure.core :as c]
@@ -54,7 +55,8 @@
   (-reload [this]))
 
 (defn register-print [klz data-fn]
-  (printers/register-printer klz (symbol (.getName klz)) data-fn))
+  #?(:bb nil
+     :default (printers/register-printer klz (symbol (.getName klz)) data-fn)))
 
 (defn ensure-aero [path cache opts]
   (when-not @cache

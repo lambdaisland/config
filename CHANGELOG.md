@@ -1,10 +1,8 @@
 # Unreleased
 
-## Added
-
 ## Fixed
 
-## Changed
+- bb compatibility
 
 # 0.5.22 (2025-02-06 / 9db9c06)
 
