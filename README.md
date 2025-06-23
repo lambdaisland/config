@@ -28,13 +28,13 @@ Configuration library
 To use the latest release, add the following to your `deps.edn` ([Clojure CLI](https://clojure.org/guides/deps_and_cli))
 
 ```
-com.lambdaisland/config {:mvn/version "0.7.31"}
+com.lambdaisland/config {:mvn/version "0.8.33"}
 ```
 
 or add the following to your `project.clj` ([Leiningen](https://leiningen.org/))
 
 ```
-[com.lambdaisland/config "0.7.31"]
+[com.lambdaisland/config "0.8.33"]
 ```
 <!-- /installation -->
 
