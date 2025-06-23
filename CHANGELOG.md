@@ -1,3 +1,11 @@
+# Unreleased
+
+## Added
+
+## Fixed
+
+## Changed
+
 # 0.9.34 (2025-06-23 / a8ef842)
 
 ## Added
