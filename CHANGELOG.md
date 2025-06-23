@@ -4,6 +4,8 @@
 
 ## Fixed
 
+- fix reader conditional error
+
 ## Changed
 
 # 0.6.27 (2025-04-23 / e7e97b4)
