@@ -1,3 +1,11 @@
+# Unreleased
+
+## Added
+
+## Fixed
+
+## Changed
+
 # 0.10.37 (2025-08-25 / 262e81e)
 
 ## Added
