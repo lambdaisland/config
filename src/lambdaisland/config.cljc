@@ -166,11 +166,12 @@
                           m
                           (reduce
                            (fn [m p]
-                             (if-let [v (-value p k)]
-                               (reduced (assoc m k {:val v
-                                                    :provider p
-                                                    :source (-source p k)}))
-                               m))
+                             (let [v (-value p k)]
+                               (if (some? v)
+                                 (reduced (assoc m k {:val v
+                                                      :provider p
+                                                      :source (-source p k)}))
+                                 m)))
                            m
                            providers))))]
     (c/get values k)))
