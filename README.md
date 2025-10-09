@@ -97,7 +97,7 @@ to follow XDG conventions and read a `~/.config/app-name.edn` file.
 
 This will check, in order, until it's found a value:
 
-- The `$APP_NAME__HTTP__PORT` environment variable
+- The `APP_NAME__HTTP__PORT` environment variable
 - The `app-name.http.port` Java system property (`System/getProperty`)
 - `config.local.edn` in the JVM's CWD
 - `$XDG_CONFIG_HOME/app-name.edn`
