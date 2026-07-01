@@ -1,3 +1,11 @@
+# Unreleased
+
+## Added
+
+## Fixed
+
+## Changed
+
 # 0.12.45 (2026-07-01 / e90c383)
 
 ## Fixed
