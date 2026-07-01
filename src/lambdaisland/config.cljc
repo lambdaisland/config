@@ -9,7 +9,8 @@
    [lambdaisland.data-printers.auto :as printers]))
 
 (defn- env-case [s]
-  (-> s str/upper-case (str/replace #"[-/]" "_")))
+  (-> s str/upper-case (str/replace #"/" "_") (str/replace #"[-/]" "_")))
+
 
 (defn key->env-var
   "Take the key used to identify a setting or secret, and turn it into a string
@@ -37,15 +38,15 @@
 
   Checked in order
   - `:env` explicitly passed in
-  - `PREFIX_ENV` env var, based on the configured `:prefix`, uppercased
+  - `PREFIX__ENV` env var, based on the configured `:prefix`, uppercased
   - `prefix.env` Java system property (use Java CLI flag `-D`, e.g. `-Dprefix.env=prod`)
   - if env var `CI=true` then `:test` (convention used by most CI providers)
   - otherwise: `:dev`"
-  [opts]
+  [{:keys [prefix env] :as opts}]
   (or
-   (:env opts)
-   (some-> (:prefix opts) (str/replace #"/" "_") str/upper-case (str "__ENV") System/getenv keyword)
-   (some-> (:prefix opts) (str/replace #"/" ".") (str ".env") System/getProperty keyword)
+   env
+   (some-> (key->env-var prefix "ENV") prn System/getenv keyword)
+   (some-> prefix (str/replace #"/" ".") (str ".env") System/getProperty keyword)
    (when (= "true" (System/getenv "CI")) :test)
    :dev))
 

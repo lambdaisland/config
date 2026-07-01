@@ -1,10 +1,8 @@
 # Unreleased
 
-## Added
-
 ## Fixed
 
-## Changed
+- Convert dashes in prefix to underscore when used as env-var for getting PREFIX__ENV
 
 # 0.11.42 (2026-07-01 / f826ee0)
 
