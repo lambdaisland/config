@@ -1,3 +1,11 @@
+# Unreleased
+
+## Added
+
+## Fixed
+
+## Changed
+
 # 0.11.42 (2026-07-01 / f826ee0)
 
 ## Added
