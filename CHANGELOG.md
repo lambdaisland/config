@@ -2,27 +2,19 @@
 
 ## Added
 
-## Fixed
-
-## Changed
+- Add support for systemd-creds ($CREDENTIALS_DIRECTORY)
 
 # 0.10.37 (2025-08-25 / 262e81e)
 
-## Added
-
 ## Fixed
 
-## Changed
+- Handle `false` values correctly
 
 # 0.9.34 (2025-06-23 / a8ef842)
-
-## Added
 
 ## Fixed
 
 - fix reader conditional error
-
-## Changed
 
 # 0.6.27 (2025-04-23 / e7e97b4)
 
