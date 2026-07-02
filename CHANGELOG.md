@@ -1,10 +1,8 @@
 # Unreleased
 
-## Added
-
 ## Fixed
 
-## Changed
+- Fix cljdoc build
 
 # 0.12.45 (2026-07-01 / e90c383)
 

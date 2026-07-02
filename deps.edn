@@ -5,8 +5,8 @@
   lambdaisland/data-printers {:mvn/version "0.9.58"}}
 
  :aliases
- {:aliases
-  {:provided
+ {:provided
+  {:extra-deps
    {com.lambdaisland/cli {:mvn/version "0.19.78"}}}
 
   :test
