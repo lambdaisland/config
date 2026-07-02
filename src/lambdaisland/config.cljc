@@ -6,32 +6,8 @@
    [clojure.core :as c]
    [clojure.java.io :as io]
    [clojure.string :as str]
+   [lambdaisland.config.munge :as munge]
    [lambdaisland.data-printers.auto :as printers]))
-
-(defn- env-case [s]
-  (-> s str/upper-case (str/replace #"/" "_") (str/replace #"[-/]" "_")))
-
-
-(defn key->env-var
-  "Take the key used to identify a setting or secret, and turn it into a string
-  suitable for use as an environment variable.
-
-  - if the key is already a string it is left untouched
-  - otherwise it is assumed to be an ident (symbol or keyword)
-  - identifiers are uppercased and munged, as per [[munge]]
-  - dashes become underscores
-  - if the ident is qualified (has a namespace), two underscores are used to
-    separate name and namespace"
-  [prefix k]
-  (str
-   (when prefix
-     (str (env-case prefix) "__"))
-   (if (string? k)
-     k
-     (str (when (qualified-ident? k)
-            (str (str/upper-case (munge (namespace k)))
-                 "__"))
-          (str/upper-case (munge (name k)))))))
 
 (defn env-key
   "The current environment name, as a keyword, for instance `:dev`, `:prod`, or `:test`
@@ -45,7 +21,7 @@
   [{:keys [prefix env] :as opts}]
   (or
    env
-   (some-> (key->env-var prefix "ENV") prn System/getenv keyword)
+   (some-> (munge/key->env-var prefix "ENV") System/getenv keyword)
    (some-> prefix (str/replace #"/" ".") (str ".env") System/getProperty keyword)
    (when (= "true" (System/getenv "CI")) :test)
    :dev))
@@ -84,8 +60,8 @@
 
 (deftype EnvProvider [prefix]
   ConfigProvider
-  (-value [this k] (System/getenv (key->env-var prefix k)))
-  (-source [this k] (str "$" (key->env-var prefix k) " environment variable"))
+  (-value [this k] (System/getenv (munge/key->env-var prefix k)))
+  (-source [this k] (str "$" (munge/key->env-var prefix k) " environment variable"))
   (-reload [this]))
 
 (register-print EnvProvider #(do {:prefix (.-prefix %)}))
@@ -119,10 +95,14 @@
 
 (register-print DerefMapProvider #(do {:desc (.-desc %)}))
 
-(defn new-config [env providers]
-  {:env env
-   :providers (remove nil? providers)
-   :values (atom {})})
+(defn new-config
+  ([env providers]
+   (new-config env providers nil))
+  ([env providers prefix]
+   {:prefix prefix
+    :env env
+    :providers (remove nil? providers)
+    :values (atom {})}))
 
 (defn create [{:keys [prefix env-vars java-system-props local-config xdg-config
                       prefix-env prefix-props]

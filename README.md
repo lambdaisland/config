@@ -213,6 +213,84 @@ multi-threaded) scenarios you can pass a var or other derefable to
   (cli/dispatch* cmdspec argv))
 ```
 
+### systemd-creds integration
+
+When running an application under Systemd, the natural way to provide API keys
+or other credentials to the application is through systemd-creds. This allows
+you to store the secret in an encrypted form, using a TPM module if available,
+or a encryption key only accessible to root. The secrets are then decrypted and
+made available to the application as files under the `$CREDENTIALS_DIRECTORY`,
+only accessible to that process.
+
+For more info on `systemd-creds` see:
+
+```shell
+# Creating credentials
+man systemd-creds
+
+# Using LoadCredential/LoadCredentialEncrypted in service files
+man systemd.exec
+```
+
+As an example, we'll create a `:api/key` credential for prefix `"my-app"`
+
+First, create the credential, store it in the default location, this simplies
+our service file. Follow naming convention `prefix-key` with `/` replaced with
+`-`.
+
+```shell
+echo "my-secret" | systemd-creds encrypt - /etc/credstore.encrypted/my-app-api-key
+```
+
+In `/etc/systemd/system/my-app.service`
+
+```conf
+[Service]
+User=my-app
+ExecStart=clojure ...
+# Make sure `resources/<prefix>/prod.edn` config defaults are used 
+Environment=MY_APP__ENV=prod
+LoadCredentialEncrypted=my-app-api-key
+```
+
+In your code:
+
+```clojure
+(ns my-app.config
+  (:refer-clojure :exclude [get])
+  (:require
+   [lambdaisland.config :as config]
+   [lambdaisland.config.systemd-creds :as system-creds]))
+
+(def prefix "my-app")
+
+(def config
+  (-> {:prefix prefix}
+      config/create
+      system-creds/add-provider))
+      
+(config/get config :api/key)
+```
+
+Note that, when using encrypted credentials, the name is stored as part of the
+credential file. If you try to expose it to the application under a different
+name, it will refuse to do so.
+
+```conf
+LoadCredentialEncrypted=name-in-app:name-on-disk
+```
+
+Either pass the correct name to `systemd-creds encrypt --name="name" ...`, or
+provide a blank name, to disable the name check (less secure).
+`systemd-creds encrypt --name= ...`.
+
+The file name is derived from the key as follows:
+
+- slashes become dashes
+- prefix is separated from key with `-`
+- characters `*?<>!` are stripped
+- e.g. prefix: \"my-app\", key: `:service/api-key!` -> my-app-service-api-key
+
 ## Idiomatic Usage
 
 In summary, the general idea is:
