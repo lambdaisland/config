@@ -1,4 +1,4 @@
-# Unreleased
+# 0.13.48 (2026-07-02 / 9dc7e0a)
 
 ## Fixed
 
