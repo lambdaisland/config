@@ -3,7 +3,7 @@
   <modelVersion>4.0.0</modelVersion>
   <groupId>com.lambdaisland</groupId>
   <artifactId>config</artifactId>
-  <version>0.13.48</version>
+  <version>0.14.53</version>
   <name>config</name>
   <description>Configuration library</description>
   <url>https://github.com/lambdaisland/config</url>
@@ -25,7 +25,7 @@
     <url>https://github.com/lambdaisland/config</url>
     <connection>scm:git:git://github.com/lambdaisland/config.git</connection>
     <developerConnection>scm:git:ssh://git@github.com/lambdaisland/config.git</developerConnection>
-    <tag>5604f356e76eaf08e5e877e130fcc7453e780dcd</tag>
+    <tag>36634134f9171bd0a0ba1920289e347dcd3bc67e</tag>
   </scm>
   <dependencies>
     <dependency>
@@ -41,7 +41,7 @@
     <dependency>
       <groupId>com.lambdaisland</groupId>
       <artifactId>cli</artifactId>
-      <version>0.19.78</version>
+      <version>1.30.130</version>
       <scope>provided</scope>
     </dependency>
   </dependencies>
@@ -69,7 +69,7 @@
         <configuration>
           <archive>
             <manifestEntries>
-              <git-revision>5604f356e76eaf08e5e877e130fcc7453e780dcd</git-revision>
+              <git-revision>36634134f9171bd0a0ba1920289e347dcd3bc67e</git-revision>
             </manifestEntries>
           </archive>
         </configuration>
