@@ -25,9 +25,9 @@
 
 (defn add-provider
   ([config]
-   (add-provider config nil))
+   (add-provider config (:prefix config)))
   ([config prefix]
    (reset! (:values config) {})
    (update config :providers
            into
-           [(->SystemdCredsProvider (:prefix config))])))
+           [(->SystemdCredsProvider prefix)])))

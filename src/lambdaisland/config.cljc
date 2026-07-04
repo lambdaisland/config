@@ -138,7 +138,8 @@
       (when env-edn
         (->AeroProvider env-edn aero-opts (atom nil)))
       (when config-edn
-        (->AeroProvider config-edn aero-opts (atom nil)))])))
+        (->AeroProvider config-edn aero-opts (atom nil)))]
+     prefix)))
 
 (defn get-entry [{:keys [providers values] :as config} k]
   (let [values (swap! values

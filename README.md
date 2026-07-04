@@ -222,7 +222,44 @@ or a encryption key only accessible to root. The secrets are then decrypted and
 made available to the application as files under the `$CREDENTIALS_DIRECTORY`,
 only accessible to that process.
 
-For more info on `systemd-creds` see:
+Note that this provider simply expects files following a certain naming
+convention under `$CREDENTIALS_DIRECTORY`. In other words, you don't have to use
+it with systemd-creds, and you can set that environment variable yourself if you
+have files with secrets under a specific location, for instance in a managed
+cloud environment.
+
+To set this up, require `lambdaisland.config.systemd-creds`, and wrap the result
+of `config/create` in a call to `add-provider`.
+
+```clojure
+(ns my-app.config
+  (:refer-clojure :exclude [get])
+  (:require
+   [lambdaisland.config :as config]
+   [lambdaisland.config.systemd-creds :as system-creds]))
+
+(def prefix "my-app")
+
+(def config
+  (-> {:prefix prefix}
+      config/create
+      system-creds/add-provider))
+      
+(config/get config :api/key) ;; will look for $CREDENTIALS_DIRECTORY/my-app-api-key
+```
+
+You can pass an alternative prefix to `add-provider`, or `nil` to not use a prefix.
+
+```clojure
+(def config
+  (-> {:prefix prefix}
+      config/create
+      (system-creds/add-provider nil)))
+      
+(config/get config :api/key) ;; $CREDENTIALS_DIRECTORY/api-key
+```
+
+For more info on `systemd-creds` see these man pages:
 
 ```shell
 # Creating credentials
@@ -253,22 +290,9 @@ Environment=MY_APP__ENV=prod
 LoadCredentialEncrypted=my-app-api-key
 ```
 
-In your code:
+Using the example setup above, you can now access this credential using:
 
 ```clojure
-(ns my-app.config
-  (:refer-clojure :exclude [get])
-  (:require
-   [lambdaisland.config :as config]
-   [lambdaisland.config.systemd-creds :as system-creds]))
-
-(def prefix "my-app")
-
-(def config
-  (-> {:prefix prefix}
-      config/create
-      system-creds/add-provider))
-      
 (config/get config :api/key)
 ```
 

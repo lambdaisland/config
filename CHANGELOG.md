@@ -1,10 +1,8 @@
 # Unreleased
 
-## Added
-
 ## Fixed
 
-## Changed
+- Correctly handle prefix in systemd-creds, more docs for systemd-creds
 
 # 0.14.53 (2026-07-04 / c275360)
 
