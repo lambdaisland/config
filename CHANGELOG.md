@@ -2,9 +2,7 @@
 
 ## Added
 
-## Fixed
-
-## Changed
+- More test coverage, document systemd integration
 
 # 0.13.48 (2026-07-02 / 9dc7e0a)
 
