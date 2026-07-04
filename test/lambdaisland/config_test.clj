@@ -1,8 +1,15 @@
 (ns lambdaisland.config-test
   (:require
-   [clojure.test :refer [deftest is]]
-   [clojure.core :as c]
-   [lambdaisland.config :as config]))
+   [clojure.string :as str]
+   [clojure.test :refer [deftest is use-fixtures]]
+   [lambdaisland.config :as config]
+   [lambdaisland.config.test-helpers :as helpers]))
+
+(defn each-fixture [f]
+  (helpers/setenv {"MYAPP__ENV" "" "CI" "false" "MYAPP__DB__HOST" "env-host"})
+  (f))
+
+(use-fixtures :each each-fixture)
 
 (deftest get-and-source-test
   (let [p   (config/->MapProvider {:host "localhost" :port 5432} "literal map")
@@ -38,3 +45,25 @@
     (reset! a {:key :new})
     (config/reload! cfg)
     (is (= :new (config/get cfg :key)))))
+
+(deftest env-key-from-explicit
+  (is (= :prod (config/env-key {:env :prod}))))
+
+(deftest env-key-from-env-var
+  (helpers/setenv {"MYAPP__ENV" "prod"})
+  (is (= :prod (config/env-key {:prefix "myapp"}))))
+
+(deftest env-key-ci
+  (helpers/setenv {"CI" "true"})
+  (is (= :test (config/env-key {}))))
+
+(deftest env-key-default
+  (helpers/setenv {"CI" "false"})
+  (is (= :dev (config/env-key {}))))
+
+(deftest env-provider-test
+  (helpers/setenv {"MYAPP__DB__HOST" "env-db-host"})
+  (let [p (config/->EnvProvider "myapp")
+        cfg (config/new-config :dev [p])]
+    (is (= "env-db-host" (config/get cfg :db/host)))
+    (is (str/includes? (config/source cfg :db/host) "MYAPP__DB__HOST"))))

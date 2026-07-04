@@ -7,8 +7,12 @@
  :aliases
  {:provided
   {:extra-deps
-   {com.lambdaisland/cli {:mvn/version "0.19.78"}}}
+   {com.lambdaisland/cli {:mvn/version "1.30.130"}}}
 
   :test
   {:extra-paths ["test"]
-   :extra-deps  {lambdaisland/kaocha {:mvn/version "1.91.1392"}}}}}
+   :jvm-opts     ["--add-opens=java.base/java.lang=ALL-UNNAMED"
+                  "--add-opens=java.base/java.util=ALL-UNNAMED"
+                  "--enable-native-access=ALL-UNNAMED"]
+   :extra-deps  {com.github.jnr/jnr-posix {:mvn/version "3.2.1"}
+                 lambdaisland/kaocha {:mvn/version "1.91.1392"}}}}}
